@@ -1,0 +1,12 @@
+package com.subway.config;
+
+import org.springframework.context.annotation.Configuration;
+import org.springframework.data.web.config.EnableSpringDataWebSupport;
+
+// 페이징 사용시 안정적인 JSON 구조를 받기 위한 Config
+
+@Configuration
+@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
+public class BoardConfig {
+	
+}

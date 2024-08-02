@@ -1,0 +1,14 @@
+package com.subway.domain;
+
+import java.util.Date;
+
+// 네이티브 쿼리를 위한 BoardDTO Projection
+
+public interface BoardDTO {
+	int getIdx();
+	String getTitle();
+	String getNickname();
+	String getContent();
+	Date getCreate_Date(); 
+	
+}

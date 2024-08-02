@@ -1,0 +1,34 @@
+package com.subway.controller;
+
+import org.springframework.stereotype.Controller;
+
+import com.subway.serivce.BoardService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class BoardController {
+
+	private final BoardService bs;
+
+	@GetMapping("/board")
+	public ResponseEntity<?> getBoard() {
+		log.info("getBoard: All");
+		return ResponseEntity.ok(bs.getBoards());
+	}
+
+	@PostMapping("/board")
+	public ResponseEntity<?> getBoardPost(@RequestBody Board board) {
+		log.info("postBoard: Test Data");
+		return ResponseEntity.ok(bs.saveBoard(board));
+	}
+
+	@GetMapping("/board/{id}")
+	public ResponseEntity<?> getBoardId(@PathVariable Long id) {
+		log.info("getBoard: " + id);
+		return ResponseEntity.ok(bs.getBoard(id));
+
+	}
+
+}

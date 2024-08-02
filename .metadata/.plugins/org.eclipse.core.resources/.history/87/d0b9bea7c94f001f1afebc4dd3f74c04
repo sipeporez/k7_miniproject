@@ -1,0 +1,5 @@
+package com.subway.config;
+
+public class LoginConfig {
+
+}

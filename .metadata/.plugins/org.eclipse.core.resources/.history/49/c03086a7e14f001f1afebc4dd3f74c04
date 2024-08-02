@@ -1,0 +1,12 @@
+package com.subway.persistence;
+
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Query;
+
+import com.subway.domain.Board;
+
+public interface BoardRepository extends JpaRepository<Board, Integer> {
+
+//	 @Query("SELECT new com.example.dto.PostDTO(p.idx, p.title, p.nickname, p.content, p.createDate) FROM Board p")
+//	    List<PostDTO> findAllPostDTOs();
+}

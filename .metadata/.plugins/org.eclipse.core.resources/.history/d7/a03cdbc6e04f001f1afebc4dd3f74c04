@@ -1,0 +1,24 @@
+package com.subway.dto;
+
+import java.util.Date;
+
+import lombok.Getter;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter @Setter @ToString
+public class BoardDTO {
+	private int idx;
+    private String title;
+    private String nickname;
+    private String content;
+    private Date createDate;
+
+    public BoardDTO(int idx, String title, String nickname, String content, Date createDate) {
+        this.idx = idx;
+        this.title = title;
+        this.nickname = nickname;
+        this.content = content;
+        this.createDate = createDate;
+    }
+}

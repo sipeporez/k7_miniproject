@@ -1,0 +1,5 @@
+package com.subway.domain;
+
+public class Member {
+
+}

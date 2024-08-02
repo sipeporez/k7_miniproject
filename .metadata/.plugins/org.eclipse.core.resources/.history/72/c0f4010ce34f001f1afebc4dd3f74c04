@@ -1,0 +1,56 @@
+package com.subway.service;
+
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+
+import org.springframework.stereotype.Service;
+
+import com.subway.domain.Board;
+import com.subway.domain.Member;
+import com.subway.persistence.BoardRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class BoardService {
+
+	private final BoardRepository br;
+
+	public List<Board> getBoards() {
+		List<Object[]> obj = br.getAllBoards();
+		
+		List<Board> boards = new ArrayList<>();
+		for (Object[] posts : obj) {
+			boards.add(Board.builder()
+					.idx((int) posts[0])
+					.title((String) posts[1])
+					.nickname((String) posts[2])
+					.content((String) posts[3])
+					.createDate((Date) posts[4])
+					.build());
+		}
+		return boards;
+		 
+
+		return null;
+//		List<Board> boards = br.findAll();
+//        for (Board post : boards) {
+//            post.setMember(Member.builder().nickname(post.getNickname()).build());  // member 필드 제거
+//        }
+//		return boards;
+	}
+
+	public Board getBoard(Integer id) {
+		return br.findById(id).get();
+	}
+
+	public List<Board> saveBoard(Board b) {
+		br.save(Board.builder().title(b.getTitle()).content(b.getContent()).nickname(b.getNickname())
+				.createDate(new Date()).build());
+
+		return br.findAll();
+	}
+
+}

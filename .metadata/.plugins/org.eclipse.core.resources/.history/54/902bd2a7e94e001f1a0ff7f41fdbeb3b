@@ -1,0 +1,38 @@
+package com.subway.config;
+
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.Configuration;
+import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.WebSecurityCustomizer;
+import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.security.web.firewall.HttpFirewall;
+import org.springframework.security.web.firewall.StrictHttpFirewall;
+
+@Configuration
+public class SecurityConfig {
+	
+	@Bean
+	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
+		
+		http.authorizeHttpRequests(ah-> ah
+				.requestMatchers("/admin").hasRole("ADMIN")
+				.anyRequest().permitAll());
+		http.formLogin(fl->fl.defaultSuccessUrl("http://192.168.0.131:3000/")
+				.successForwardUrl("192.168.0.131:3000/"));
+		
+		return http.build();
+	}
+	
+	 @Bean
+	    HttpFirewall allowUrlEncodedDoubleSlashHttpFirewall() {
+	        StrictHttpFirewall firewall = new StrictHttpFirewall();
+	        firewall.setAllowUrlEncodedDoubleSlash(true);
+	        return firewall;
+	    }
+
+	    @Bean
+	    WebSecurityCustomizer webSecurityCustomizer() {
+	        return (web) -> web.httpFirewall(allowUrlEncodedDoubleSlashHttpFirewall());
+	    }
+
+}

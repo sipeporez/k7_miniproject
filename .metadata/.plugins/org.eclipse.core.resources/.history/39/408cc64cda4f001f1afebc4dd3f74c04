@@ -1,0 +1,12 @@
+package com.subway.domain;
+
+import java.util.Date;
+
+public class BoardDTO {
+	private int idx;
+    private String title;
+    private String nickname;
+    private String content;
+    private Date createDate;
+
+}

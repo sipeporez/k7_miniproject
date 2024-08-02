@@ -1,0 +1,6 @@
+package com.subway.config;
+
+@Configuration
+@EnableSpringDataWebSupport(pageSerializationMode = EnableSpringDataWebSupport.PageSerializationMode.VIA_DTO)
+public class BoardConfig {
+}

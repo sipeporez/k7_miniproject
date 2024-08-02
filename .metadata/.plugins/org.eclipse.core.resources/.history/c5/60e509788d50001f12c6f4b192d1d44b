@@ -1,0 +1,47 @@
+package com.subway.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.subway.domain.Board;
+import com.subway.service.BoardService;
+
+import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+
+@Controller
+@RequiredArgsConstructor
+@Slf4j
+public class BoardController {
+
+	private final BoardService bs;
+
+//	@GetMapping("/board")
+//	public ResponseEntity<?> getBoard() {
+//		log.info("getBoard: All");
+//		return ResponseEntity.ok(bs.getBoards());
+//	}
+	@GetMapping("/board")
+	public ResponseEntity<?> getBoard() {
+		log.info("getBoard: All");
+		return ResponseEntity.ok(bs.findIdByNickname("BB"));
+	}
+
+	@PostMapping("/board")
+	public ResponseEntity<?> getBoardPost(@RequestBody Board board) {
+		log.info("postBoard: Test Data");
+		return ResponseEntity.ok(bs.saveBoard(board));
+	}
+
+	@GetMapping("/board/{id}")
+	public ResponseEntity<?> getBoardId(@PathVariable Integer id) {
+		log.info("getBoard: " + id);
+		return ResponseEntity.ok(bs.getBoard(id));
+
+	}
+
+}

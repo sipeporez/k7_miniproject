@@ -1,0 +1,11 @@
+package com.subway.config;
+
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+
+public class PasswordEncoder {
+
+	org.springframework.security.crypto.password.PasswordEncoder encoder() {
+		return new BCryptPasswordEncoder();
+		
+	}
+}

@@ -1,0 +1,8 @@
+package com.subway.config;
+
+public class PasswordEncoder {
+
+	PasswordEncoder By(){
+		
+	}
+}
