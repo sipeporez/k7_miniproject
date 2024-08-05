@@ -11,7 +11,7 @@ import com.subway.domain.BoardDTO;
 
 public interface BoardRepository extends JpaRepository<Board, Integer> {
 
-	@Query("SELECT b.idx, b.title, b.nickname, b.content, b.createDate FROM Board b")
+	@Query("SELECT b.idx, b.title, b.content, b.createDate FROM Board b")
 	Page<Board> getBoards(Pageable pageable);
 
 	@Query(value = "SELECT b.idx, b.title, b.nickname, b.content, b.create_Date FROM Board b WHERE MATCH(nickname) AGAINST(:nickname IN NATURAL LANGUAGE MODE)", nativeQuery = true)
@@ -22,4 +22,7 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
 	@Query(value = "SELECT b.idx, b.title, b.nickname, b.content, b.create_Date FROM Board b WHERE MATCH(content) AGAINST(:content IN NATURAL LANGUAGE MODE)", nativeQuery = true)
 	Page<BoardDTO> getBoardsByContent(Pageable pageable, @Param("content") String content);
+	
+	@Query("SELECT b FROM Board b WHERE b.member.userid = :userid AND b.idx = :idx")
+	Board getBoardByUserID(@Param("userid") String userid, @Param("idx") int idx);
 }

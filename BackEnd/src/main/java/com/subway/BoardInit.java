@@ -32,13 +32,13 @@ public class BoardInit implements ApplicationRunner{
 				.title("테스트용 게시글")
 				.content("테스트용 내용")
 				.member(member)
-				.nickname(member.getNickname())
+				.subway_no(95)
 				.build());
 		br.save(Board.builder()
 				.title("테스트용 게시글")
 				.content("테스트용 내용")
 				.member(member2)
-				.nickname(member2.getNickname())
+				.subway_no(96)
 				.build());
 		
 	}

@@ -1,0 +1,12 @@
+package com.subway.service;
+
+import org.springframework.stereotype.Service;
+
+@Service
+public class LoginService {
+	priavte final MemberRe
+
+	public Object signup() {
+	}
+
+}

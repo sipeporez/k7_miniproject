@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 
 import com.subway.domain.Board;
 import com.subway.domain.BoardDTO;
-import com.subway.domain.Member;
 import com.subway.persistence.BoardRepository;
 import com.subway.persistence.MemberRepository;
 
@@ -42,7 +41,7 @@ public class BoardService {
 	}
 
 	public Page<Board> saveBoard(Pageable pageable, Board b) {
-		// 프론트에서 토큰을 통해 멤버객체 조회 및 생성
+		// 프론트에서 받은 토큰을 통해 멤버객체 조회 및 생성
 		String userid = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
 		if (authentication != null) 
@@ -52,12 +51,22 @@ public class BoardService {
 		br.save(Board.builder()
 				.title(b.getTitle())
 				.content(b.getContent())
-				.nickname(b.getNickname())
 				.member(mr.findById(userid).get())
 				.createDate(new Date())
+				.subway_no(b.getSubway_no())
 				.build());
 
 		return br.getBoards(pageable);
+	}
+	public Board deleteBoard() {
+		// 프론트에서 토큰을 통해 멤버객체 조회 및 생성
+		String userid = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) 
+			userid = authentication.getName();
+		else return null;
+		
+		return br.getBoardByUserID(userid, 4);
 	}
 
 

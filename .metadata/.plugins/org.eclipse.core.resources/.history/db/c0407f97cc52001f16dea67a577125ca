@@ -1,0 +1,23 @@
+package com.subway.service;
+
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.subway.domain.Member;
+import com.subway.persistence.MemberRepository;
+
+@Service
+public class LoginService {
+	private final MemberRepository mr;
+	private final PasswordEncoder enc;
+
+	public void signup(Member m) {
+		mr.save(Member.builder()
+				.userid(null)
+				.password(enc.encode(null))
+				.nickname(null)
+				.build());
+		
+	}
+
+}

@@ -31,12 +31,12 @@ public class BoardController {
 	}
 
 	// 게시판 닉네임으로 게시글 찾기
-	@GetMapping("/board/nick/{nickname}")
-	public ResponseEntity<?> getBoardNick(
-			@PageableDefault(page = 0, size = 5, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
-			@PathVariable String nickname) {
-		return ResponseEntity.ok(bs.getBoardsByNickname(pageable, nickname));
-	}
+//	@GetMapping("/board/nick/{nickname}")
+//	public ResponseEntity<?> getBoardNick(
+//			@PageableDefault(page = 0, size = 5, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
+//			@PathVariable String nickname) {
+//		return ResponseEntity.ok(bs.getBoardsByNickname(pageable, nickname));
+//	}
 	
 	// 게시판 글 제목으로 게시글 찾기
 	@GetMapping("/board/title/{title}")
@@ -55,12 +55,19 @@ public class BoardController {
 	}
 	
 	// 게시판에 글 쓰기(POST)
-	@PostMapping("/board")
-	public ResponseEntity<?> getBoardPost(
+	@PostMapping("/write")
+	public ResponseEntity<?> writeBoard(
 			@PageableDefault(page = 0, size = 5, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
-			@RequestBody Board board) {
+			@RequestBody Board board, @RequestBody String token) {
 		log.info("postBoard: Test Data");
 		return ResponseEntity.ok(bs.saveBoard(pageable, board));
+	}
+	
+	// 게시판 글 지우기(POST)
+	@PostMapping("/delete")
+	public ResponseEntity<?> deleteBoard() {
+		log.info("deleteBoard: Test Data");
+		return ResponseEntity.ok(bs.deleteBoard());
 	}
 
 }

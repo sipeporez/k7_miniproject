@@ -1,0 +1,37 @@
+package com.subway.service;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.HttpStatusCode;
+import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
+
+import com.subway.domain.Member;
+import com.subway.domain.Role;
+import com.subway.persistence.MemberRepository;
+
+import lombok.RequiredArgsConstructor;
+
+@Service
+@RequiredArgsConstructor
+public class LoginService {
+	private final MemberRepository mr;
+	private final PasswordEncoder enc;
+
+	public void signup(Member m) {
+		mr.save(Member.builder()
+				.userid(m.getUserid())
+				.password(enc.encode(m.getPassword()))
+				.nickname(m.getNickname())
+				.role(Role.ROLE_MEMBER)
+				.build());
+	}
+
+	public ResponseEntity<?> checkID(Member m) {
+		if (mr.findById(m.getUserid()).isPresent())
+			return ResponseEntity.status(HttpStatus.CONFLICT)
+					.body("중복된 ID 입니다.");
+		else return ResponseEntity.ok("사용 가능한 ID 입니다.");
+	}
+
+}

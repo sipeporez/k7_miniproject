@@ -13,7 +13,7 @@ public class LoginConfig implements WebMvcConfigurer {
 	public void addCorsMappings(@NonNull CorsRegistry registry) {
 		registry.addMapping("/login")
 				.allowCredentials(true)
-//				.allowedHeaders(HttpHeaders.AUTHORIZATION)
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
 				.exposedHeaders(HttpHeaders.AUTHORIZATION) 
 				.allowedMethods(
 						HttpMethod.GET.name(),
@@ -22,13 +22,45 @@ public class LoginConfig implements WebMvcConfigurer {
 						"http://localhost:3000",
 						"http://127.0.0.1:3000",
 						"http://192.168.0.131:3000");
-		registry.addMapping("/signup")
-		.allowedMethods(
-				HttpMethod.GET.name(),
-				HttpMethod.POST.name())
-		.allowedOrigins(
-				"http://localhost:3000",
-				"http://127.0.0.1:3000",
-				"http://192.168.0.131:3000");
+
+		registry.addMapping("/signup/**")
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
+				.allowedMethods(
+						HttpMethod.GET.name(),
+						HttpMethod.POST.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
+		
+		registry.addMapping("/board**")
+				.allowCredentials(true)
+				.allowedMethods(
+						HttpMethod.GET.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
+		
+		registry.addMapping("/write**")
+				.allowCredentials(true)
+				.allowedHeaders(HttpHeaders.AUTHORIZATION)
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
+				.allowedMethods(
+						HttpMethod.POST.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
+		
+		registry.addMapping("/delete**")
+				.allowCredentials(true)
+				.allowedHeaders(HttpHeaders.AUTHORIZATION)
+				.allowedMethods(
+						HttpMethod.POST.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
 	}
 }

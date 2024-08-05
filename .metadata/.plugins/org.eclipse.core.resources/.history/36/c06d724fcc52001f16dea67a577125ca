@@ -1,0 +1,17 @@
+package com.subway.service;
+
+import org.springframework.stereotype.Service;
+
+import com.subway.domain.Member;
+import com.subway.persistence.MemberRepository;
+
+@Service
+public class LoginService {
+	private final MemberRepository mr;
+
+	public Object signup() {
+		mr.save(Member.builder().build());
+		
+	}
+
+}
