@@ -1,12 +1,14 @@
 package com.subway.service;
 
 import java.util.Date;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.subway.domain.Board;
 import com.subway.domain.BoardDTO;
@@ -18,15 +20,28 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
-
+	
 	private final BoardRepository br;
 	private final MemberRepository mr;
 
-	// 모든 보드 목록 조회
-	public Page<Board> getBoards(Pageable pageable) {
-		return br.getBoards(pageable);
+	// 프론트에서 토큰을 통해 멤버객체 조회 및 생성
+	public String getUserIDFromToken() {
+		String userid = null;
+		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+		if (authentication != null) userid = authentication.getName();
+		else return null;
+		
+		return userid;
 	}
 	
+	// 모든 보드 목록 조회
+	public Page<BoardDTO> getBoards(Pageable pageable, int station_no) {
+		return br.getBoards(pageable, station_no);
+	}
+	// 게시글 조회
+	public BoardDTO viewBoards(int station_no, int idx) {
+		return br.viewBoards(station_no, idx);
+	}
 	// 닉네임으로 게시글 조회
 	public Page<BoardDTO> getBoardsByNickname(Pageable pageable, String nickname){
 		return br.getBoardsByNickname(pageable, nickname);
@@ -40,33 +55,39 @@ public class BoardService {
 		return br.getBoardsByContent(pageable, content);
 	}
 
-	public Page<Board> saveBoard(Pageable pageable, Board b) {
-		// 프론트에서 받은 토큰을 통해 멤버객체 조회 및 생성
-		String userid = null;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) 
-			userid = authentication.getName();
-		else return null;
-		
+	// 보드에 게시글 저장
+	public Page<BoardDTO> saveBoard(Pageable pageable, int station_no, Board b) {
 		br.save(Board.builder()
 				.title(b.getTitle())
 				.content(b.getContent())
-				.member(mr.findById(userid).get())
+				.member(mr.findById(getUserIDFromToken()).get())
 				.createDate(new Date())
-				.subway_no(b.getSubway_no())
+				.station_no(station_no)
 				.build());
-
-		return br.getBoards(pageable);
+		return br.getBoards(pageable, station_no);
 	}
-	public Board deleteBoard() {
-		// 프론트에서 토큰을 통해 멤버객체 조회 및 생성
-		String userid = null;
-		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null) 
-			userid = authentication.getName();
-		else return null;
+	
+	// 보드 게시글 수정
+	public Page<BoardDTO> editBoard(Pageable pageable, Board b, int idx) {
 		
-		return br.getBoardByUserID(userid, 4);
+		Optional<Board> board = br.findById(idx);
+		if (board.isPresent() && getUserIDFromToken() != null) { 
+			br.save(Board.builder()
+					.title(board.get().getTitle())
+					.content(board.get().getContent())
+					.member(board.get().getMember())
+					.createDate(board.get().getCreateDate())
+					.station_no(board.get().getStation_no())
+					.build());
+		return br.getBoards(pageable, b.getStation_no());
+		}
+		else return null;
+	}
+	
+	// userid와 글 번호로 게시글 삭제
+	@Transactional
+	public int deleteBoard(int idx) {
+		return br.deleteBoardByUserID(getUserIDFromToken(), idx);
 	}
 
 

@@ -9,6 +9,6 @@ public interface BoardDTO {
 	String getTitle();
 	String getNickname();
 	String getContent();
-	Date getCreate_Date(); 
-	
+	Date getCreate_Date();
+	int getStation_no();
 }

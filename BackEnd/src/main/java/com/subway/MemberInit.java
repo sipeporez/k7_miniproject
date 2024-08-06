@@ -29,7 +29,6 @@ public class MemberInit implements ApplicationRunner{
 				.nickname("BB")
 				.role(Role.ROLE_ADMIN)
 				.build());
-		
 	}
 
 }

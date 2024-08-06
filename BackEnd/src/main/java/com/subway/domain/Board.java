@@ -36,7 +36,7 @@ public class Board {
 	private String content;
 	
 	@Column(nullable = false)
-	private int subway_no;
+	private int station_no;
 	
 	@Builder.Default @Column(nullable = false)
 	private Date createDate = new Date(); 

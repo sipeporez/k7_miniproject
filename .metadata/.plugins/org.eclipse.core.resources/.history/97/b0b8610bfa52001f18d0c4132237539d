@@ -1,0 +1,46 @@
+package com.subway.domain;
+
+import java.util.Date;
+
+import jakarta.persistence.Column;
+import jakarta.persistence.Entity;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.Id;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
+import lombok.ToString;
+
+@Getter @Setter @ToString
+@AllArgsConstructor
+@NoArgsConstructor
+@Builder
+@Entity
+public class Member {
+	@Id @Column(length = 32)
+	private String userid;
+	
+	@Column(nullable = false, length = 255)
+	private String password;
+	
+	@Column(nullable = false, length = 16)
+	private String nickname;
+	
+	@Enumerated(EnumType.STRING) @Builder.Default 
+	@Column(nullable = false)
+	private Role role = Role.ROLE_MEMBER;
+	
+	@Temporal(TemporalType.TIMESTAMP) @Builder.Default
+	@Column(nullable = false)
+	private Date regidate = new Date();
+	
+	@Builder.Default 
+	@Column(nullable = false, length = 1, columnDefinition = "int default 1")
+	private int enabled = 1;
+
+}
