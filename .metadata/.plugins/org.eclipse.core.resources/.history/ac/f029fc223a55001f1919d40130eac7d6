@@ -1,0 +1,39 @@
+package com.subway.controller;
+
+import java.io.IOException;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
+import com.subway.domain.dto.RequestStationDataDTO;
+import com.subway.service.StationService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class StationController {
+	
+	private final StationService ss;
+	
+	@GetMapping("/subway")
+	public ResponseEntity<?> getStationData(@RequestBody RequestStationDataDTO dto) {
+		ObjectMapper mapper = new ObjectMapper();
+        String jsonStr = "{ \"station_no\": \"95\", \"date\": [\"2024-01-01\", \"2024-01-02\"] }";
+        try {
+			dto = mapper.readValue(jsonStr, RequestStationDataDTO.class);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        
+		return ResponseEntity.ok(ss.getStationDataByDate(dto));
+//		return ResponseEntity.ok(ss.getStationData(dto));
+	}
+	
+
+}

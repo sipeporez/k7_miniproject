@@ -1,0 +1,30 @@
+package com.subway.controller;
+
+import java.util.Date;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+
+import com.subway.service.StationService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class StationController {
+	
+	private final StationService ss;
+	
+	@GetMapping("/subway")
+	public ResponseEntity<?> getStationData(
+			@RequestBody int station_no,
+			@RequestBody Date date
+			) {
+		ss.getStationData(station_no, date);
+		return ResponseEntity.ok("ok");
+	}
+	
+
+}

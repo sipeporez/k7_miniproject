@@ -1,0 +1,13 @@
+package com.subway.domain;
+
+import java.util.Date;
+
+import jakarta.persistence.Id;
+
+// 네이티브 쿼리를 위한 BoardDTO Projection
+
+public interface StationDTO {
+	Date getDate();
+	int getStation_no();
+	int getGubun();
+}

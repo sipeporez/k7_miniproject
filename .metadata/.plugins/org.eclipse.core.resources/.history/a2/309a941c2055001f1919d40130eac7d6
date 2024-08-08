@@ -1,0 +1,10 @@
+package com.subway.domain.dto;
+
+import java.util.Date;
+
+public class RequestStationDataDTO {
+	
+	private String station_no;
+	private Date date;
+
+}

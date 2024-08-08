@@ -1,0 +1,35 @@
+package com.subway.domain;
+
+import java.util.Date;
+
+// 네이티브 쿼리를 위한 BoardDTO Projection
+
+public class StationDTO {
+	private Date date;
+	private String station_name;
+	private int gubun;
+	private int hour_01_02;
+	private int hour_02_03;
+	private int hour_03_04;
+	private int hour_04_05;
+	private int hour_05_06;
+	private int hour_06_07;
+	private int hour_07_08;
+	private int hour_08_09;
+	private int hour_09_10;
+	private int hour_10_11;
+	private int hour_11_12;
+	private int hour_12_13;
+	private int hour_13_14;
+	private int hour_14_15;
+	private int hour_15_16;
+	private int hour_16_17;
+	private int hour_17_18;
+	private int hour_18_19;
+	private int hour_19_20;
+	private int hour_20_21;
+	private int hour_21_22;
+	private int hour_22_23;
+	private int hour_23_24;
+	private int hour_24_01;
+}

@@ -1,0 +1,5 @@
+package com.subway.persistence;
+
+public class StationRepository {
+
+}

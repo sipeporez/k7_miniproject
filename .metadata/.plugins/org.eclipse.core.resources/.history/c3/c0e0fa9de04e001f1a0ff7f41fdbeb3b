@@ -1,5 +1,0 @@
-package com.subway.persistence;
-
-public class MemberRepository {
-
-}

@@ -1,2 +1,13 @@
 1722841647110	Delete elements
 1722930038099	Rename type 'LoginConfig'
+1722992391611	Copy compilation unit
+1722992406133	Rename type 'BoardDTO2'
+1722992410454	Rename type 'getBoardDTO'
+1722993240490	Delete element
+1723005393082	Copy compilation unit
+1723005533821	Delete element
+1723077060951	Delete element
+1723077544167	Delete element
+1723077644426	Move compilation units
+1723077649658	Rename package 'com.subway.domain.DTO'
+1723098894539	Infer generic type arguments

@@ -44,10 +44,29 @@ public class CORSConfig implements WebMvcConfigurer {
 		
 		registry.addMapping("/write**")
 				.allowCredentials(true)
-				.allowedHeaders(HttpHeaders.AUTHORIZATION)
-				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE, HttpHeaders.AUTHORIZATION)
 				.allowedMethods(
 						HttpMethod.GET.name(),
+						HttpMethod.POST.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
+		
+		registry.addMapping("/edit**")
+				.allowCredentials(true)
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE, HttpHeaders.AUTHORIZATION)
+				.allowedMethods(
+						HttpMethod.POST.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
+		
+		registry.addMapping("/checkUser**")
+				.allowCredentials(true)
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE, HttpHeaders.AUTHORIZATION)
+				.allowedMethods(
 						HttpMethod.POST.name())
 				.allowedOrigins(
 						"http://localhost:3000",
@@ -58,6 +77,18 @@ public class CORSConfig implements WebMvcConfigurer {
 				.allowCredentials(true)
 				.allowedHeaders(HttpHeaders.AUTHORIZATION)
 				.allowedMethods(
+						HttpMethod.POST.name())
+				.allowedOrigins(
+						"http://localhost:3000",
+						"http://127.0.0.1:3000",
+						"http://192.168.0.131:3000");
+		
+		
+		registry.addMapping("/subway")
+				.allowCredentials(true)
+				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
+				.allowedMethods(
+						HttpMethod.GET.name(),
 						HttpMethod.POST.name())
 				.allowedOrigins(
 						"http://localhost:3000",

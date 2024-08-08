@@ -1,0 +1,25 @@
+package com.subway.controller;
+
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.GetMapping;
+
+import com.subway.domain.StationDTO;
+import com.subway.service.StationService;
+
+import lombok.RequiredArgsConstructor;
+
+@Controller
+@RequiredArgsConstructor
+public class StationController {
+	
+	private final StationService ss;
+	
+	@GetMapping("/subway")
+	public StationDTO ResponseEntity<?> getStationData() {
+		ss.getStationData();
+		return ResponseEntity.ok("ok");
+	}
+	
+
+}
