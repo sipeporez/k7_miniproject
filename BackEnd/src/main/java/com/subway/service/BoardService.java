@@ -17,7 +17,6 @@ import com.subway.domain.dto.GetBoardDTO;
 import com.subway.persistence.BoardRepository;
 import com.subway.persistence.MemberRepository;
 
-import lombok.Builder;
 import lombok.RequiredArgsConstructor;
 
 @Service
@@ -77,14 +76,14 @@ public class BoardService {
 	public int editBoard(Board b, int idx) {
 		Optional<Board> board = br.findById(idx);
 		String userid = board.get().getMember().getUserid();
-		if (!userid.equals(getUserIDFromToken())) return 401;
+		if (!userid.equals(getUserIDFromToken())) return HttpStatus.UNAUTHORIZED.value();
 		if (board.isPresent()) {
 			Board bd = board.get();
 			bd.setContent(b.getContent());
 			bd.setTitle(b.getTitle());
 			br.save(bd);
-			return 200;
-		} else return 500;
+			return HttpStatus.OK.value();
+		} else return HttpStatus.INTERNAL_SERVER_ERROR.value();
 	}
 
 	public int checkUser(int idx) {

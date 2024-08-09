@@ -15,11 +15,9 @@ import com.subway.domain.Board;
 import com.subway.service.BoardService;
 
 import lombok.RequiredArgsConstructor;
-import lombok.extern.slf4j.Slf4j;
 
 @Controller
 @RequiredArgsConstructor
-@Slf4j
 public class BoardController {
 
 	private final BoardService bs;
@@ -38,7 +36,7 @@ public class BoardController {
 			@RequestParam(name = "idx", defaultValue = "4") int idx) {
 		return ResponseEntity.ok(bs.viewBoards(station_no, idx));
 	}
-	// 유저 검증용 메서드
+	// 게시판 게시글 유저 검증용 메서드
 	@PostMapping("/checkUser")
 	public ResponseEntity<?> checkUser(@RequestParam(name = "idx") int idx) {
 		return ResponseEntity.status(bs.checkUser(idx)).body(null);
