@@ -1,9 +1,0 @@
-package com.subway.service;
-
-public class LoginService {
-
-	public Object signup() {
-		return null;
-	}
-
-}

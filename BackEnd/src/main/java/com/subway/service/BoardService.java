@@ -26,16 +26,13 @@ public class BoardService {
 	private final BoardRepository br;
 	private final MemberRepository mr;
 
-	// 프론트에서 토큰을 통해 멤버객체 조회 및 생성
+	// 프론트에서 받은 토큰으로 멤버 id 반환
 	public String getUserIDFromToken() {
-		String userid = null;
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-		if (authentication != null)
-			userid = authentication.getName();
-		else
-			return null;
-
-		return userid;
+		if (authentication != null && authentication.isAuthenticated()) {
+			return authentication.getName();
+		}
+		return null;
 	}
 
 	// 모든 보드 목록 조회
@@ -86,6 +83,7 @@ public class BoardService {
 		} else return HttpStatus.INTERNAL_SERVER_ERROR.value();
 	}
 
+	// 유저 검증용 메서드
 	public int checkUser(int idx) {
 		Optional<Board> board = br.findById(idx);
 		String userid = board.get().getMember().getUserid();
@@ -98,7 +96,6 @@ public class BoardService {
 	// userid와 글 번호로 게시글 삭제
 	@Transactional
 	public int deleteBoard(int idx) {
-
 		Optional<Board> board = br.findById(idx);
 		String userid = board.get().getMember().getUserid();
 		if (board.isPresent() && userid.equals(getUserIDFromToken())) {

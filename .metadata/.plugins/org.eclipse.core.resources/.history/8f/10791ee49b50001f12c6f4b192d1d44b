@@ -1,7 +1,0 @@
-package com.subway.domain;
-
-// 네이티브 쿼리를 위한 Board DTO
-
-public class BoardDTO {
-
-}

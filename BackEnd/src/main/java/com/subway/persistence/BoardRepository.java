@@ -20,6 +20,11 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	@Query(value = "SELECT b.idx, b.title, b.create_Date, m.nickname, b.station_no "
 			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE b.station_no = :station_no", nativeQuery = true)
 	Page<GetBoardDTO> getBoards(Pageable pageable, @Param("station_no") int station_no);
+	
+	// 마이페이지 게시판 출력
+	@Query(value = "SELECT b.idx, b.title, b.create_Date, m.nickname, b.station_no "
+			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE b.userid = :userid", nativeQuery = true)
+	Page<GetBoardDTO> getMyBoards(Pageable pageable, @Param("userid") String userid);
 
 	// 게시글 조회
 	@Query(value = "SELECT b.idx, b.title, b.content, b.create_Date, m.nickname, b.station_no "
