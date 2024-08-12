@@ -47,7 +47,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
 		
 		mr.save(Member.builder()
 				.userid(username)
-				.nickname("ggolgerl")
 				.password(enc.encode("1a2s3d4f"))
 				.regidate(new Date())
 				.role(Role.ROLE_MEMBER)
