@@ -8,6 +8,7 @@ import org.springframework.stereotype.Component;
 import com.subway.domain.Member;
 import com.subway.domain.Role;
 import com.subway.persistence.MemberRepository;
+import com.subway.service.RandomNicknameService;
 
 import lombok.RequiredArgsConstructor;
 
@@ -16,17 +17,18 @@ import lombok.RequiredArgsConstructor;
 public class MemberInit implements ApplicationRunner{
 	private final MemberRepository mr;
 	private final PasswordEncoder enc;
+	private final RandomNicknameService rns;
 	@Override
 	public void run(ApplicationArguments args) throws Exception {
 		mr.save(Member.builder()
 				.userid("aaaa")
 				.password(enc.encode("11"))
-				.nickname("a닉네임")
+				.nickname(rns.makeRandomNickname())
 				.build());
 		mr.save(Member.builder()
 				.userid("bbbb")
 				.password(enc.encode("11"))
-				.nickname("BB")
+				.nickname(rns.makeRandomNickname())
 				.role(Role.ROLE_ADMIN)
 				.build());
 	}
