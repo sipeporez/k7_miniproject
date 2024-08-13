@@ -26,14 +26,14 @@ public class BoardController {
 	@GetMapping("/board")
 	public ResponseEntity<?> getBoard(
 			@PageableDefault(page = 0, size = 5, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
-			@RequestParam(name = "sno", defaultValue = "95") int station_no) {
+			@RequestParam(name = "sno") int station_no) {
 		return ResponseEntity.ok(bs.getBoards(pageable, station_no));
 	}
 
 	// 게시판 글 조회(GET)
 	@GetMapping("/board/view")
 	public ResponseEntity<?> viewBoard(@RequestParam(name = "sno", defaultValue = "95") int station_no,
-			@RequestParam(name = "idx", defaultValue = "4") int idx) {
+			@RequestParam(name = "idx") int idx) {
 		return ResponseEntity.ok(bs.viewBoards(station_no, idx));
 	}
 	// 게시판 게시글 유저 검증용 메서드

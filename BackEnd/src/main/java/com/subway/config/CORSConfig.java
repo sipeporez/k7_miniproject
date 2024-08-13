@@ -96,11 +96,10 @@ public class CORSConfig implements WebMvcConfigurer {
 						"http://127.0.0.1:3000",
 						"http://192.168.0.131:3000");
 		
-		registry.addMapping("/subway")
+		registry.addMapping("/subway/**")
 				.allowCredentials(true)
 				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
 				.allowedMethods(
-						HttpMethod.GET.name(),
 						HttpMethod.POST.name())
 				.allowedOrigins(
 						"http://localhost:3000",
