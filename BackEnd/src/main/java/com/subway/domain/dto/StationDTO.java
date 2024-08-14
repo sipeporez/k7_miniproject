@@ -13,9 +13,11 @@ import lombok.ToString;
 @AllArgsConstructor
 @NoArgsConstructor
 public class StationDTO {
-	private String date;
+	
 	private String station_name;
+	private String date;
 	private Byte gubun;
+	private Long total_count;
 	private Integer hour_01_02;
 	private Integer hour_02_03;
 	private Integer hour_03_04;

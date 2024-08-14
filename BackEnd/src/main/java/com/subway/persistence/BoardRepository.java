@@ -54,18 +54,59 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	@Query(value = "DELETE FROM Board b WHERE b.idx=:idx AND b.userid = :userid", nativeQuery = true)
 	int deleteBoardByUserID(@Param("userid") String userid, @Param("idx") int idx);
 	
-	// passenger_count 검색 - 날짜 기준 데이터
+	/* -- 아래는 Station 데이터 조회용 네이티브 쿼리문 메서드들 -- */
+	
+	// passenger_count 검색 - 특정 역 기준 하루 데이터
 	@Query(value = "SELECT sl.station_name, pc.date, pc.gubun, "
+			+ "(hour_05_06 + hour_06_07 + hour_07_08 + hour_08_09 + hour_09_10 + hour_10_11 + hour_11_12 + hour_12_13 + hour_13_14 + hour_14_15 + hour_15_16 + hour_16_17 + hour_17_18 + hour_18_19 + hour_19_20 + hour_20_21 + hour_21_22 + hour_22_23 + hour_23_24 + hour_24_01) "
+			+ "AS total_count, "
 			+ "hour_01_02, hour_02_03, hour_03_04, hour_04_05, hour_05_06, hour_06_07, hour_07_08, hour_08_09, hour_09_10, hour_10_11, hour_11_12, hour_12_13, hour_13_14, hour_14_15, hour_15_16, hour_16_17, hour_17_18, hour_18_19, hour_19_20, hour_20_21, hour_21_22, hour_22_23, hour_23_24, hour_24_01 "
 			+ "FROM passenger_count pc, station_list sl "
 			+ "WHERE pc.station_no = sl.station_no and pc.station_no = :station_no AND pc.date in (:date)", nativeQuery = true)
 	List<Object[]> getStationDataByDate(
 			@Param(value = "station_no") int station_no,
 			@Param(value = "date") List<Date> datelist);
-	
-	// passenger_count 검색 - 시간대 컬럼 동적 쿼리
-	@Query(value = ":query", nativeQuery = true)
-	List<Object[]> getStationDataByHours(
-			@Param(value = "query") String query);
 
+	// passenger_count 검색 - 특정 역 기준 6개월치 데이터
+	@Query(value = "WITH daily_totals AS (SELECT date, gubun, sl.station_name, "
+			+ "(hour_05_06 + hour_06_07 + hour_07_08 + hour_08_09 + hour_09_10 + hour_10_11 + hour_11_12 + hour_12_13 + hour_13_14 + hour_14_15 + hour_15_16 + hour_16_17 + hour_17_18 + hour_18_19 + hour_19_20 + hour_20_21 + hour_21_22 + hour_22_23 + hour_23_24 + hour_24_01) "
+			+ "AS total_count "
+			+ "FROM passenger_count pc, station_list sl "
+			+ "WHERE pc.station_no = sl.station_no "
+			+ "AND pc.station_no = :station_no "
+			+ "AND date BETWEEN '2024-01-01' AND '2024-06-30') "
+			+ "SELECT station_name, DATE_FORMAT(date, '%Y-%m') AS month, gubun, SUM(total_count) AS total_count_month "
+			+ "FROM daily_totals "
+			+ "GROUP BY station_name, gubun, month "
+			+ "ORDER BY month", nativeQuery = true)
+	List<Object[]> getStationAllTotalCount(
+			@Param(value = "station_no") int station_no);
+	
+	// passenger_count 검색 - 특정 역 기준 1달치 데이터
+	@Query(value = "SELECT sl.station_name, date, gubun, "
+			+ "(hour_05_06 + hour_06_07 + hour_07_08 + hour_08_09 + hour_09_10 + hour_10_11 + hour_11_12 + hour_12_13 + hour_13_14 + hour_14_15 + hour_15_16 + hour_16_17 + hour_17_18 + hour_18_19 + hour_19_20 + hour_20_21 + hour_21_22 + hour_22_23 + hour_23_24 + hour_24_01) "
+			+ "AS total_count "
+			+ "FROM passenger_count pc, station_list sl "
+			+ "WHERE pc.station_no = sl.station_no "
+			+ "AND pc.station_no = :station_no "
+			+ "AND date like :monthDate", nativeQuery = true)
+	List<Object[]> getStationMonthlyTotalCount(
+			@Param(value = "station_no") int station_no,
+			@Param(value = "monthDate") String monthDate);
+	
+	// passenger_count 검색 - 특정 역 기준 1달을 1주일로 나눈 단위 데이터
+	@Query(value = "SELECT sl.station_name, "
+			+ "CONCAT(DATE_FORMAT(MIN(pc.date), '%Y-%m-%d'), ' ~ ', "
+			+ "DATE_FORMAT(LEAST(DATE_ADD(MIN(pc.date), INTERVAL 6 DAY), LAST_DAY(MIN(pc.date))), '%Y-%m-%d')) AS date, pc.gubun, "
+			+ "SUM(pc.hour_05_06 + pc.hour_06_07 + pc.hour_07_08 + pc.hour_08_09 + pc.hour_09_10 + pc.hour_10_11 + pc.hour_11_12 + pc.hour_12_13 + pc.hour_13_14 + pc.hour_14_15 + pc.hour_15_16 + pc.hour_16_17 + pc.hour_17_18 + pc.hour_18_19 + pc.hour_19_20 + pc.hour_20_21 + pc.hour_21_22 + pc.hour_22_23 + pc.hour_23_24 + pc.hour_24_01) "
+			+ "AS total_count "
+			+ "FROM passenger_count pc "
+			+ "JOIN station_list sl ON pc.station_no = sl.station_no "
+			+ "WHERE pc.station_no = :station_no "
+			+ "AND pc.date like :monthDate GROUP BY sl.station_name, pc.gubun, FLOOR(DATEDIFF(pc.date, CONCAT(YEAR(CURDATE()), '-', :month, '-01')) / 7);", nativeQuery = true)
+	List<Object[]> getStationWeekTotalCount(
+			@Param(value = "station_no") int station_no,
+			@Param(value = "monthDate") String monthDate,
+			@Param(value = "month") int month);
+	
 }

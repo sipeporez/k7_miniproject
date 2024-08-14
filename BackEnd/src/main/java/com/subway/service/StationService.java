@@ -1,5 +1,6 @@
 package com.subway.service;
 
+import java.math.BigDecimal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
@@ -11,6 +12,7 @@ import org.springframework.stereotype.Service;
 
 import com.subway.domain.dto.RequestStationDataDTO;
 import com.subway.domain.dto.StationDTO;
+import com.subway.domain.dto.StationTotalDTO;
 import com.subway.persistence.BoardRepository;
 
 import jakarta.persistence.EntityManager;
@@ -23,6 +25,7 @@ public class StationService {
 	private final BoardRepository br;
 	private final EntityManager em;
 
+	// 특정 역의 24시간 시간대별 탑승객 수 조회
 	public List<StationDTO> getStationDataByDate(RequestStationDataDTO dto) {
         List<StationDTO> list = new ArrayList<>();
         
@@ -35,35 +38,36 @@ public class StationService {
 					.station_name(obj[0].toString())
 					.date(obj[1].toString())
 					.gubun((Byte) obj[2])
-					.hour_01_02((Integer) obj[3])
-					.hour_02_03((Integer) obj[4])
-					.hour_03_04((Integer) obj[5])
-					.hour_04_05((Integer) obj[6])
-					.hour_05_06((Integer) obj[7])
-					.hour_06_07((Integer) obj[8])
-					.hour_07_08((Integer) obj[9])
-					.hour_08_09((Integer) obj[10])
-					.hour_09_10((Integer) obj[11])
-					.hour_10_11((Integer) obj[12])
-					.hour_11_12((Integer) obj[13])
-					.hour_12_13((Integer) obj[14])
-					.hour_13_14((Integer) obj[15])
-					.hour_14_15((Integer) obj[16])
-					.hour_15_16((Integer) obj[17])
-					.hour_16_17((Integer) obj[18])
-					.hour_17_18((Integer) obj[19])
-					.hour_18_19((Integer) obj[20])
-					.hour_19_20((Integer) obj[21])
-					.hour_20_21((Integer) obj[22])
-					.hour_21_22((Integer) obj[23])
-					.hour_22_23((Integer) obj[24])
-					.hour_23_24((Integer) obj[25])
-					.hour_24_01((Integer) obj[26])
+					.total_count((Long) obj[3])
+					.hour_01_02((Integer) obj[4])
+					.hour_02_03((Integer) obj[5])
+					.hour_03_04((Integer) obj[6])
+					.hour_04_05((Integer) obj[7])
+					.hour_05_06((Integer) obj[8])
+					.hour_06_07((Integer) obj[9])
+					.hour_07_08((Integer) obj[10])
+					.hour_08_09((Integer) obj[11])
+					.hour_09_10((Integer) obj[12])
+					.hour_10_11((Integer) obj[13])
+					.hour_11_12((Integer) obj[14])
+					.hour_12_13((Integer) obj[15])
+					.hour_13_14((Integer) obj[16])
+					.hour_14_15((Integer) obj[17])
+					.hour_15_16((Integer) obj[18])
+					.hour_16_17((Integer) obj[19])
+					.hour_17_18((Integer) obj[20])
+					.hour_18_19((Integer) obj[21])
+					.hour_19_20((Integer) obj[22])
+					.hour_20_21((Integer) obj[23])
+					.hour_21_22((Integer) obj[24])
+					.hour_22_23((Integer) obj[25])
+					.hour_23_24((Integer) obj[26])
+					.hour_24_01((Integer) obj[27])
 					.build());
 		}
 		return list;
 	}
-	// 동적으로 시간대 / 날짜 받아와서 SQL 쿼리문 조회 
+	// 특정 역에서 동적으로 시간대 / 날짜 받아와서 SQL 쿼리문 조회 
 	public List<StationDTO> getStationDataByHours(RequestStationDataDTO dto) {
 		Integer station_no = dto.getStation_no();
 		List<Date> dates = dto.getDatelist();
@@ -71,7 +75,10 @@ public class StationService {
 		
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd");
 		
-		String query = "SELECT sl.station_name, pc.date, pc.gubun";
+		String query = "SELECT sl.station_name, pc.date, pc.gubun, (";
+				for (String h : hours) {query += h + "+ "; }
+				query = query.substring(0,query.length()-2);
+				query += ") as total_count ";
 				for (String h : hours) {query += ", "+ h;}
 				query += " FROM passenger_count pc, station_list sl ";
 				query += "WHERE pc.station_no = sl.station_no and pc.station_no = ";
@@ -88,13 +95,14 @@ public class StationService {
 		List<Object[]> results = sql.getResultList();
 		for (Object[] result : results) {
 			Map<String, Integer> hourMap = new HashMap<>();
-			for (int i = 3; i < result.length; i++) {
-				hourMap.put(hours.get(i - 3), (Integer) result[i]);
+			for (int i = 4; i < result.length; i++) {
+				hourMap.put(hours.get(i - 4), (Integer) result[i]);
 			}
 			list.add(StationDTO.builder()
 				.station_name(result[0].toString())
 				.date(result[1].toString())
 				.gubun((Byte) result[2])
+				.total_count((Long)result[3])
 				.hour_01_02(hourMap.getOrDefault("hour_01_02", null))
 				.hour_02_03(hourMap.getOrDefault("hour_02_03", null))
 				.hour_03_04(hourMap.getOrDefault("hour_03_04", null))
@@ -120,6 +128,60 @@ public class StationService {
 				.hour_23_24(hourMap.getOrDefault("hour_23_24", null))
 				.hour_24_01(hourMap.getOrDefault("hour_24_01", null))
 				.build());
+		}
+		return list;
+	}
+	// 특정 역의 월간 승/하차 탑승객 수 합계 조회
+	public List<StationTotalDTO> getStationMonthTotalCount(RequestStationDataDTO dto) {
+		Integer station_no = dto.getStation_no();
+		String monthDate = "2024-0"+dto.getMonth().toString()+"-%";
+		
+		List<StationTotalDTO> list = new ArrayList<>();
+		
+		List<Object[]> objs = (br.getStationMonthlyTotalCount(station_no, monthDate));
+		for (Object[] obj : objs) {
+			list.add(StationTotalDTO.builder()
+					.station_name(obj[0].toString())
+					.date(obj[1].toString())
+					.gubun((Byte) obj[2])
+					.total_count((Long)obj[3])
+					.build());
+		}
+		return list;
+	}
+	// 특정 역의 6개월 간 승/하차 탑승객 수 합계 조회 (전체 데이터 조회)
+	public List<StationTotalDTO> getStationAllTotalCount(RequestStationDataDTO dto) {
+		Integer station_no = dto.getStation_no();
+		
+		List<StationTotalDTO> list = new ArrayList<>();
+		
+		List<Object[]> objs = (br.getStationAllTotalCount(station_no));
+		for (Object[] obj : objs) {
+			list.add(StationTotalDTO.builder()
+					.station_name(obj[0].toString())
+					.date(obj[1].toString())
+					.gubun((Byte) obj[2])
+					.total_count(((BigDecimal)obj[3]).longValue())
+					.build());
+		}
+		return list;
+	}
+	// 특정 역의 1주일 간 승/하차 탑승객 수 합계 조회
+	public List<StationTotalDTO> getStationWeekTotalCount(RequestStationDataDTO dto) {
+		Integer station_no = dto.getStation_no();
+		String monthDate = "2024-0"+dto.getMonth().toString()+"-%";
+		Integer month = dto.getMonth();
+		
+		List<StationTotalDTO> list = new ArrayList<>();
+		
+		List<Object[]> objs = (br.getStationWeekTotalCount(station_no, monthDate, month));
+		for (Object[] obj : objs) {
+			list.add(StationTotalDTO.builder()
+					.station_name(obj[0].toString())
+					.date(obj[1].toString())
+					.gubun((Byte) obj[2])
+					.total_count(((BigDecimal)obj[3]).longValue())
+					.build());
 		}
 		return list;
 	}

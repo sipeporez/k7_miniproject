@@ -39,6 +39,9 @@ public class RandomNicknameService {
 		List<String> adjList = loadFileToStringList(rl.getResource("classpath:static/adjective.txt"));
 		List<String> aniList = loadFileToStringList(rl.getResource("classpath:static/animal.txt"));
 		Random rnd = new Random();
+		if ((adjList.get(rnd.nextInt(adjList.size())) + " " + aniList.get(rnd.nextInt(aniList.size()))).length() > 16) {
+			makeRandomNickname();
+		}
 		return adjList.get(rnd.nextInt(adjList.size())) + " " + aniList.get(rnd.nextInt(aniList.size()));
 	}
 

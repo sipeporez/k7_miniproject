@@ -26,5 +26,18 @@ public class StationController {
 		return ResponseEntity.ok(ss.getStationDataByHours(dto));
 	}
 	
-
+	@PostMapping("/subway/month")
+	public ResponseEntity<?> getStationDataMonth(@RequestBody RequestStationDataDTO dto) {
+		return ResponseEntity.ok(ss.getStationMonthTotalCount(dto));
+	}
+	
+	@PostMapping("/subway/week")
+	public ResponseEntity<?> getStationDataWeek(@RequestBody RequestStationDataDTO dto) {
+		return ResponseEntity.ok(ss.getStationWeekTotalCount(dto));
+	}
+	
+	@PostMapping("/subway/all")
+	public ResponseEntity<?> getStationDataAll(@RequestBody RequestStationDataDTO dto) {
+		return ResponseEntity.ok(ss.getStationAllTotalCount(dto));
+	}
 }

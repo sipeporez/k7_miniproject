@@ -26,6 +26,13 @@ public class MyPageController {
 	public ResponseEntity<?> mypage() {
 		return ResponseEntity.ok(ms.getMember());
 	}
+	// 비밀번호 검증
+	@PostMapping("/mypage/checkpw")
+	public ResponseEntity<?> checkPassword(@RequestBody Member member) {
+		boolean flag = ms.checkPW(member);
+		return flag ? ResponseEntity.ok("비밀번호 검증 성공")
+				: ResponseEntity.badRequest().body("비밀번호 검증 실패");
+	}
 	
 	// 비밀번호 변경
 	@PostMapping("/mypage/changepw")
@@ -48,9 +55,9 @@ public class MyPageController {
 	}
 	
 	// 회원 탈퇴 (비밀번호 재입력)
-	@PostMapping("/mypage/removeacc")
-	public ResponseEntity<?> removeAcc(@RequestBody Member member) {
-		boolean flag = ms.deleteAccount(member);
+	@GetMapping("/mypage/removeacc")
+	public ResponseEntity<?> removeAcc() {
+		boolean flag = ms.deleteAccount();
 		return flag ? ResponseEntity.ok("회원 탈퇴 완료")
 				: ResponseEntity.badRequest().body("회원 탈퇴 실패");
 	}

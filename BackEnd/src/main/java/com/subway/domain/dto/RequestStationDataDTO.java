@@ -24,5 +24,6 @@ public class RequestStationDataDTO {
 	private List<Date> datelist;
 	@JsonProperty("hour")
 	private List<String> hourlist;
+	private Integer month;
 
 }
