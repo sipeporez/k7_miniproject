@@ -1,9 +1,0 @@
-package com.subway.persistence;
-
-import org.springframework.data.jpa.repository.JpaRepository;
-
-import com.subway.domain.Station;
-
-public interface StationRepository extends JpaRepository<Station, int> {
-
-}

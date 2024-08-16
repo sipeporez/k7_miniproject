@@ -28,7 +28,7 @@ public class StationController {
 	
 	@PostMapping("/subway/month")
 	public ResponseEntity<?> getStationDataMonth(@RequestBody RequestStationDataDTO dto) {
-		return ResponseEntity.ok(ss.getStationMonthTotalCount(dto));
+		return ResponseEntity.ok(ss.getStationMonthTotalCountDivWeek(dto));
 	}
 	
 	@PostMapping("/subway/week")

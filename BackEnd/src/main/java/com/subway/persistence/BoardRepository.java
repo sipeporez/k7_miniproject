@@ -60,9 +60,9 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	@Query(value = "SELECT sl.station_name, pc.date, pc.gubun, "
 			+ "(hour_05_06 + hour_06_07 + hour_07_08 + hour_08_09 + hour_09_10 + hour_10_11 + hour_11_12 + hour_12_13 + hour_13_14 + hour_14_15 + hour_15_16 + hour_16_17 + hour_17_18 + hour_18_19 + hour_19_20 + hour_20_21 + hour_21_22 + hour_22_23 + hour_23_24 + hour_24_01) "
 			+ "AS total_count, "
-			+ "hour_01_02, hour_02_03, hour_03_04, hour_04_05, hour_05_06, hour_06_07, hour_07_08, hour_08_09, hour_09_10, hour_10_11, hour_11_12, hour_12_13, hour_13_14, hour_14_15, hour_15_16, hour_16_17, hour_17_18, hour_18_19, hour_19_20, hour_20_21, hour_21_22, hour_22_23, hour_23_24, hour_24_01 "
+			+ "hour_05_06, hour_06_07, hour_07_08, hour_08_09, hour_09_10, hour_10_11, hour_11_12, hour_12_13, hour_13_14, hour_14_15, hour_15_16, hour_16_17, hour_17_18, hour_18_19, hour_19_20, hour_20_21, hour_21_22, hour_22_23, hour_23_24, hour_24_01 "
 			+ "FROM passenger_count pc, station_list sl "
-			+ "WHERE pc.station_no = sl.station_no and pc.station_no = :station_no AND pc.date in (:date)", nativeQuery = true)
+			+ "WHERE pc.station_no = sl.station_no and pc.station_no = :station_no AND pc.date in (:date);", nativeQuery = true)
 	List<Object[]> getStationDataByDate(
 			@Param(value = "station_no") int station_no,
 			@Param(value = "date") List<Date> datelist);
@@ -82,17 +82,19 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	List<Object[]> getStationAllTotalCount(
 			@Param(value = "station_no") int station_no);
 	
-	// passenger_count 검색 - 특정 역 기준 1달치 데이터
+	// passenger_count 검색 - 특정 역 기준 1주일치 데이터
 	@Query(value = "SELECT sl.station_name, date, gubun, "
 			+ "(hour_05_06 + hour_06_07 + hour_07_08 + hour_08_09 + hour_09_10 + hour_10_11 + hour_11_12 + hour_12_13 + hour_13_14 + hour_14_15 + hour_15_16 + hour_16_17 + hour_17_18 + hour_18_19 + hour_19_20 + hour_20_21 + hour_21_22 + hour_22_23 + hour_23_24 + hour_24_01) "
 			+ "AS total_count "
 			+ "FROM passenger_count pc, station_list sl "
 			+ "WHERE pc.station_no = sl.station_no "
 			+ "AND pc.station_no = :station_no "
-			+ "AND date like :monthDate", nativeQuery = true)
+			+ "AND date between :dateRange1 AND :dateRange2 "
+			+ "ORDER BY date;", nativeQuery = true)
 	List<Object[]> getStationMonthlyTotalCount(
 			@Param(value = "station_no") int station_no,
-			@Param(value = "monthDate") String monthDate);
+			@Param(value = "dateRange1") String dateRange,
+			@Param(value = "dateRange2") String dateRange2);
 	
 	// passenger_count 검색 - 특정 역 기준 1달을 1주일로 나눈 단위 데이터
 	@Query(value = "SELECT sl.station_name, "
@@ -103,8 +105,9 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 			+ "FROM passenger_count pc "
 			+ "JOIN station_list sl ON pc.station_no = sl.station_no "
 			+ "WHERE pc.station_no = :station_no "
-			+ "AND pc.date like :monthDate GROUP BY sl.station_name, pc.gubun, FLOOR(DATEDIFF(pc.date, CONCAT(YEAR(CURDATE()), '-', :month, '-01')) / 7);", nativeQuery = true)
-	List<Object[]> getStationWeekTotalCount(
+			+ "AND pc.date like :monthDate GROUP BY sl.station_name, pc.gubun, FLOOR(DATEDIFF(pc.date, CONCAT(YEAR(CURDATE()), '-', :month, '-01')) / 7) "
+			+ "ORDER BY date;", nativeQuery = true)
+	List<Object[]> getStationMonthTotalCountDivWeek(
 			@Param(value = "station_no") int station_no,
 			@Param(value = "monthDate") String monthDate,
 			@Param(value = "month") int month);
