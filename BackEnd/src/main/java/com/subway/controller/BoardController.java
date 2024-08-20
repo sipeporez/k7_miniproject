@@ -32,10 +32,16 @@ public class BoardController {
 
 	// 게시판 글 조회(GET)
 	@GetMapping("/board/view")
-	public ResponseEntity<?> viewBoard(@RequestParam(name = "sno", defaultValue = "95") int station_no,
-			@RequestParam(name = "idx") int idx) {
-		return ResponseEntity.ok(bs.viewBoards(station_no, idx));
+	public ResponseEntity<?> viewBoard(@RequestParam(name = "idx") int idx) {
+		return ResponseEntity.ok(bs.viewBoards(idx));
 	}
+	
+	// 게시판 글 조회(GET)
+	@GetMapping("/board/myview")
+	public ResponseEntity<?> viewMyBoard(@RequestParam(name = "idx") int idx) {
+		return ResponseEntity.ok(bs.viewMyBoards(idx));
+	}
+	
 	// 게시판 게시글 유저 검증용 메서드
 	@PostMapping("/checkUser")
 	public ResponseEntity<?> checkUser(@RequestParam(name = "idx") int idx) {

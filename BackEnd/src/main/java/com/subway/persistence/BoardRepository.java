@@ -28,8 +28,13 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 
 	// 게시글 조회
 	@Query(value = "SELECT b.idx, b.title, b.content, b.create_Date, m.nickname, b.station_no "
-			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE b.station_no = :station_no AND b.idx = :idx", nativeQuery = true)
-	BoardDTO viewBoards(@Param("station_no") int station_no, @Param("idx") int idx);
+			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE b.idx = :idx", nativeQuery = true)
+	BoardDTO viewBoards(@Param("idx") int idx);
+	
+	// 내가 쓴 게시글 조회
+	@Query(value = "SELECT b.idx, b.title, b.content, b.create_Date, m.nickname, b.station_no "
+			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE b.idx = :idx", nativeQuery = true)
+	BoardDTO viewMyBoards(@Param("idx") int idx);
 
 	/* -- 검색기능 -- */
 	// 닉네임으로 검색

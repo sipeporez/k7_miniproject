@@ -1,8 +1,0 @@
-package com.subway.domain.dto;
-
-public class RequestStationDataDTO {
-	
-	private String station_no;
-	private Date date;
-
-}

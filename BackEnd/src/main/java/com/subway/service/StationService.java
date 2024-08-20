@@ -63,7 +63,8 @@ public class StationService {
 		}
 		return list;
 	}
-	// 특정 역에서 동적으로 시간대 / 날짜 받아와서 SQL 쿼리문 조회 
+	// 특정 역에서 동적으로 시간대 / 날짜 받아와서 SQL 쿼리문 조회
+	// 현재 사용안함
 	public List<StationDTO> getStationDataByHours(RequestStationDataDTO dto) {
 		Integer station_no = dto.getStation_no();
 		List<Date> dates = dto.getDatelist();

@@ -28,10 +28,11 @@ public class SecurityConfig {
 	SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
 		
 		http.authorizeHttpRequests(ah-> ah
-				.requestMatchers("/member/**").authenticated()
-				.requestMatchers("/admin/**").hasRole("ADMIN")
+				.requestMatchers("/write**").authenticated()
+				.requestMatchers("/edit**").authenticated()
+				.requestMatchers("/mypage**").authenticated()
 				.anyRequest().permitAll());
-		http.formLogin(fl->fl.disable());
+		http.formLogin(fl-> fl.loginPage("/login").permitAll());
 		
 		http.oauth2Login(o2->o2.successHandler(sh));
 		

@@ -27,19 +27,67 @@ public class BoardInit implements ApplicationRunner{
 		
 		Member member2 = mr.findById("bbbb")
 				.orElseThrow(()->new UsernameNotFoundException("Not Found"));
-		
-		br.save(Board.builder()
-				.title("테스트용 게시글")
-				.content("테스트용 내용")
-				.member(member)
-				.station_no(95)
-				.build());
-		br.save(Board.builder()
-				.title("테스트용 게시글")
-				.content("테스트용 내용")
-				.member(member2)
-				.station_no(96)
-				.build());
+
+		for (int i=95; i<=134; i++) {
+			
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member)
+					.station_no(i)
+					.build());
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member2)
+					.station_no(i)
+					.build());
+			}
+		for (int i=201; i<=243; i++) {
+			
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member)
+					.station_no(i)
+					.build());
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member2)
+					.station_no(i)
+					.build());
+		}
+		for (int i=302; i<=317; i++) {
+			
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member)
+					.station_no(i)
+					.build());
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member2)
+					.station_no(i)
+					.build());
+		}
+		for (int i=402; i<=414; i++) {
+			
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member)
+					.station_no(i)
+					.build());
+			br.save(Board.builder()
+					.title("테스트용 게시글" + i)
+					.content("테스트용 내용")
+					.member(member2)
+					.station_no(i)
+					.build());
+		}
 		
 	}
 

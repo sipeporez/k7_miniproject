@@ -22,7 +22,6 @@ public class CORSConfig implements WebMvcConfigurer {
 						"http://localhost:3000",
 						"http://127.0.0.1:3000",
 						"http://192.168.0.131:3000");
-
 		registry.addMapping("/signup/**")
 				.allowedHeaders(HttpHeaders.CONTENT_TYPE)
 				.allowedMethods(

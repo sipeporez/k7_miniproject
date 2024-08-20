@@ -1,6 +1,7 @@
 package com.subway.service;
 
 import java.util.Date;
+import java.util.NoSuchElementException;
 import java.util.Optional;
 
 import org.springframework.data.domain.Page;
@@ -12,6 +13,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.subway.domain.Board;
+import com.subway.domain.Member;
+import com.subway.domain.Role;
 import com.subway.domain.dto.BoardDTO;
 import com.subway.domain.dto.GetBoardDTO;
 import com.subway.persistence.BoardRepository;
@@ -41,8 +44,13 @@ public class BoardService {
 	}
 
 	// 게시글 조회
-	public BoardDTO viewBoards(int station_no, int idx) {
-		return br.viewBoards(station_no, idx);
+	public BoardDTO viewBoards(int idx) {
+		return br.viewBoards(idx);
+	}
+
+	// 게시글 조회
+	public BoardDTO viewMyBoards(int idx) {
+		return br.viewMyBoards(idx);
 	}
 
 	// 게시글 찾기
@@ -60,49 +68,57 @@ public class BoardService {
 	// 보드에 게시글 저장
 	public void saveBoard(int station_no, Board b) {
 		String userid = getUserIDFromToken();
-		br.save(Board.builder()
-				.title(b.getTitle())
-				.content(b.getContent())
-				.member(mr.findById(userid).get())
-				.createDate(new Date())
-				.station_no(station_no)
-				.build());
+		br.save(Board.builder().title(b.getTitle()).content(b.getContent()).member(mr.findById(userid).get())
+				.createDate(new Date()).station_no(station_no).build());
 	}
 
 	// 보드 게시글 수정
 	public int editBoard(Board b, int idx) {
 		Optional<Board> board = br.findById(idx);
 		String userid = board.get().getMember().getUserid();
-		if (!userid.equals(getUserIDFromToken())) return HttpStatus.UNAUTHORIZED.value();
+		if (!userid.equals(getUserIDFromToken()))
+			return HttpStatus.UNAUTHORIZED.value();
 		if (board.isPresent()) {
 			Board bd = board.get();
 			bd.setContent(b.getContent());
 			bd.setTitle(b.getTitle());
 			br.save(bd);
 			return HttpStatus.OK.value();
-		} else return HttpStatus.INTERNAL_SERVER_ERROR.value();
+		} else
+			return HttpStatus.INTERNAL_SERVER_ERROR.value();
 	}
 
 	// 유저 검증용 메서드
 	public int checkUser(int idx) {
-		Optional<Board> board = br.findById(idx);
-		String userid = board.get().getMember().getUserid();
-		if (board.isPresent() && userid.equals(getUserIDFromToken())) {
-			return HttpStatus.OK.value();
+		try {
+			Optional<Board> board = br.findById(idx);
+			String userid = board.get().getMember().getUserid();
+			Optional<Member> member = mr.findById(getUserIDFromToken());
+			Role role = member.get().getRole();
+
+			if ((board.isPresent() && userid.equals(getUserIDFromToken())) || role == Role.ROLE_ADMIN) {
+				return HttpStatus.OK.value();
+			} else
+				return HttpStatus.UNAUTHORIZED.value();
+		} catch (NoSuchElementException e) {
+			return HttpStatus.UNAUTHORIZED.value();
 		}
-		else return HttpStatus.UNAUTHORIZED.value();
+
 	}
-	
+
 	// userid와 글 번호로 게시글 삭제
 	@Transactional
 	public int deleteBoard(int idx) {
 		Optional<Board> board = br.findById(idx);
 		String userid = board.get().getMember().getUserid();
-		if (board.isPresent() && userid.equals(getUserIDFromToken())) {
+		Optional<Member> member = mr.findById(getUserIDFromToken());
+		Role role = member.get().getRole();
+
+		if ((board.isPresent() && userid.equals(getUserIDFromToken())) || role == Role.ROLE_ADMIN) {
 			br.deleteBoardByUserID(userid, idx);
-		} else return 0;
+		} else
+			return 0;
 		return 1;
 	}
-
 
 }
