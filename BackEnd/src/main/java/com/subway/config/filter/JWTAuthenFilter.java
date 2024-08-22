@@ -54,7 +54,7 @@ public class JWTAuthenFilter extends UsernamePasswordAuthenticationFilter {
 		
 		String token = JWT.create()
 				.withClaim("username", user.getUsername())
-				.withExpiresAt(new Date(System.currentTimeMillis() * 1000 * 60 * 60000))
+				.withExpiresAt(new Date(System.currentTimeMillis() + 1000 * 60 * 600)) // 10시간	
 				.sign(Algorithm.HMAC256("com.subway.project"));
 		
 		response.addHeader(HttpHeaders.AUTHORIZATION,"Bearer " +token);

@@ -33,7 +33,7 @@ public class MyPageService {
 	// 회원정보 조회
 	public Member getMember() {
 		Member m = mr.findById(getUserIDFromToken()).orElseThrow();
-		return Member.builder().userid(m.getUserid()).nickname(m.getNickname()).regidate(m.getRegidate())
+		return Member.builder().nickname(m.getNickname()).regidate(m.getRegidate())
 				.role(m.getRole()).build();
 	}
 

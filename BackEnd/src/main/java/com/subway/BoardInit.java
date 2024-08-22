@@ -25,7 +25,7 @@ public class BoardInit implements ApplicationRunner{
 		Member member = mr.findById("aaaa")
 				.orElseThrow(()->new UsernameNotFoundException("Not Found"));
 		
-		Member member2 = mr.findById("bbbb")
+		Member member2 = mr.findById("ADMIN")
 				.orElseThrow(()->new UsernameNotFoundException("Not Found"));
 
 		for (int i=95; i<=134; i++) {

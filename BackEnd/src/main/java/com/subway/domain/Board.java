@@ -16,28 +16,34 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 import lombok.ToString;
 
-@Getter @Setter @ToString
+@Getter
+@Setter
+@ToString
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
 public class Board {
-	@Id @GeneratedValue(strategy = GenerationType.IDENTITY)
+	@Id
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int idx;
-	
+
 	@Column(nullable = false, length = 64)
 	private String title;
-	
+
 	@ManyToOne
-    @JoinColumn(name = "userid", nullable = false)
+	@JoinColumn(name = "userid", nullable = false)
 	private Member member;
-	
+
 	@Column(nullable = false, length = 2000)
 	private String content;
-	
+
 	@Column(nullable = false)
 	private int station_no;
-	
-	@Builder.Default @Column(nullable = false)
-	private Date createDate = new Date(); 
+
+	@Builder.Default
+	@Column(nullable = false)
+	private Date createDate = new Date();
+
+
 }

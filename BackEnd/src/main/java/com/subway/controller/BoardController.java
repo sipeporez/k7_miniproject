@@ -36,12 +36,6 @@ public class BoardController {
 		return ResponseEntity.ok(bs.viewBoards(idx));
 	}
 	
-	// 게시판 글 조회(GET)
-	@GetMapping("/board/myview")
-	public ResponseEntity<?> viewMyBoard(@RequestParam(name = "idx") int idx) {
-		return ResponseEntity.ok(bs.viewMyBoards(idx));
-	}
-	
 	// 게시판 게시글 유저 검증용 메서드
 	@PostMapping("/checkUser")
 	public ResponseEntity<?> checkUser(@RequestParam(name = "idx") int idx) {

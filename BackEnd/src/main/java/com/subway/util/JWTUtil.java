@@ -6,7 +6,7 @@ import com.auth0.jwt.algorithms.Algorithm;
 
 public class JWTUtil {
 	private static final long ACCESS_TOKEN_MSEC = 10 * (60 * 1000); // 10분
-	private static final String JWT_KEY = "edu.pnu.jwtkey"; // 인코딩을 위한 secret key
+	private static final String JWT_KEY = "com.subway.project"; // 인코딩을 위한 secret key
 	private static final String claimName = "username"; // 토큰에 담을 정보의 key값
 	private static final String prefix = "Bearer "; // JWT 토큰 헤더 문자열
 

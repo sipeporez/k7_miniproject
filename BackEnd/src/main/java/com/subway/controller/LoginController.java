@@ -30,5 +30,10 @@ public class LoginController {
 	public ResponseEntity<?> checkID(@RequestBody Member m) {
 			return ls.checkID(m);
 		}
+	
+	@PostMapping("/login/checkOAuth")
+	public ResponseEntity<?> checkOAuth() {
+		return ls.checkOAuth();
+	}
 
 }

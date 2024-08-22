@@ -25,10 +25,11 @@ import lombok.RequiredArgsConstructor;
 @Service
 @RequiredArgsConstructor
 public class BoardService {
+	
 
 	private final BoardRepository br;
 	private final MemberRepository mr;
-
+	
 	// 프론트에서 받은 토큰으로 멤버 id 반환
 	public String getUserIDFromToken() {
 		Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
@@ -46,11 +47,6 @@ public class BoardService {
 	// 게시글 조회
 	public BoardDTO viewBoards(int idx) {
 		return br.viewBoards(idx);
-	}
-
-	// 게시글 조회
-	public BoardDTO viewMyBoards(int idx) {
-		return br.viewMyBoards(idx);
 	}
 
 	// 게시글 찾기
