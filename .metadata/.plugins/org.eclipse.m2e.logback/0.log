@@ -7868,3 +7868,6 @@
 2024-08-23 09:46:36,145 [Worker-52: Launching BackEnd - BackEndApplication] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
 2024-08-23 09:46:36,150 [Worker-52: Launching BackEnd - BackEndApplication] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 4 resources from src\main\resources to target\classes
 2024-08-23 09:46:36,152 [Worker-52: Launching BackEnd - BackEndApplication] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\SubwayProject\BackEnd\src\test\resources
+2024-08-23 09:53:53,532 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 1 resource from src\main\resources to target\classes
+2024-08-23 09:53:53,536 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - Copying 4 resources from src\main\resources to target\classes
+2024-08-23 09:53:53,538 [Worker-45: Building] INFO  o.a.m.s.f.DefaultMavenResourcesFiltering - skip non existing resourceDirectory C:\SubwayProject\BackEnd\src\test\resources
