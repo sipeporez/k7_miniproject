@@ -24,21 +24,23 @@ public class BoardInit implements ApplicationRunner{
 		
 		Member member = mr.findById("aaaa")
 				.orElseThrow(()->new UsernameNotFoundException("Not Found"));
-		
-		Member member2 = mr.findById("ADMIN")
+		Member member2 = mr.findById("bbbb")
 				.orElseThrow(()->new UsernameNotFoundException("Not Found"));
+		
+//		Member member3 = mr.findById("ADMIN")
+//				.orElseThrow(()->new UsernameNotFoundException("Not Found"));
 
 		for (int i=95; i<=134; i++) {
 			
 			br.save(Board.builder()
-					.title("테스트용 게시글" + i)
-					.content("테스트용 내용")
+					.title("check " + i)
+					.content("color")
 					.member(member)
 					.station_no(i)
 					.build());
 			br.save(Board.builder()
-					.title("테스트용 게시글" + i)
-					.content("테스트용 내용")
+					.title("검색용 글 " + i)
+					.content("ㅋㅋㅋㅋ")
 					.member(member2)
 					.station_no(i)
 					.build());

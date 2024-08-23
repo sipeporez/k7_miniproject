@@ -50,13 +50,13 @@ public class BoardService {
 	}
 
 	// 게시글 찾기
-	public Page<GetBoardDTO> findBoards(Pageable pageable, String type, String keyword) {
+	public Page<GetBoardDTO> findBoards(Pageable pageable, String type, String keyword, int station_no) {
 		if (type.equals("nickname"))
-			return br.findBoardsByNickname(pageable, keyword);
+			return br.findBoardsByNickname(pageable, keyword, station_no);
 		else if (type.equals("title"))
-			return br.findBoardsByTitle(pageable, keyword);
+			return br.findBoardsByTitle(pageable, keyword, station_no);
 		else if (type.equals("content"))
-			return br.findBoardsByContent(pageable, keyword);
+			return br.findBoardsByContent(pageable, keyword, station_no);
 		else
 			return null;
 	}

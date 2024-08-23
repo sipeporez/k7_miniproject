@@ -34,18 +34,18 @@ public interface BoardRepository extends JpaRepository<Board, Integer> {
 	/* -- 검색기능 -- */
 	// 닉네임으로 검색
 	@Query(value = "SELECT b.idx, b.title, b.content, b.create_Date, m.nickname, b.station_no "
-			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE m.nickname like %:nickname%", nativeQuery = true)
-	Page<GetBoardDTO> findBoardsByNickname(Pageable pageable, @Param("nickname") String keyword);
+			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE m.nickname like %:nickname% AND b.station_no = :staiton_no", nativeQuery = true)
+	Page<GetBoardDTO> findBoardsByNickname(Pageable pageable, @Param("nickname") String keyword, @Param("staiton_no") int staiton_no);
 
 	// 제목으로 검색
 	@Query(value = "SELECT b.idx, b.title, b.content, b.create_Date, m.nickname, b.station_no "
-			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE MATCH(title) AGAINST(:title IN NATURAL LANGUAGE MODE)", nativeQuery = true)
-	Page<GetBoardDTO> findBoardsByTitle(Pageable pageable, @Param("title") String keyword);
+			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE MATCH(title) AGAINST(:title IN NATURAL LANGUAGE MODE) AND b.station_no = :staiton_no", nativeQuery = true)
+	Page<GetBoardDTO> findBoardsByTitle(Pageable pageable, @Param("title") String keyword, @Param("staiton_no") int staiton_no);
 
 	// 내용으로 검색
 	@Query(value = "SELECT b.idx, b.title, b.content, b.create_Date, m.nickname, b.station_no "
-			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE MATCH(content) AGAINST(:content IN NATURAL LANGUAGE MODE)", nativeQuery = true)
-	Page<GetBoardDTO> findBoardsByContent(Pageable pageable, @Param("content") String keyword);
+			+ "FROM Board b JOIN Member m ON b.userid = m.userid WHERE MATCH(content) AGAINST(:content IN NATURAL LANGUAGE MODE) AND b.station_no = :staiton_no", nativeQuery = true)
+	Page<GetBoardDTO> findBoardsByContent(Pageable pageable, @Param("content") String keyword, @Param("staiton_no") int staiton_no);
 	
 	/* -- 검색기능 끝 -- */
 	

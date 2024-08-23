@@ -46,8 +46,8 @@ public class BoardController {
 	@GetMapping("/board/search")
 	public ResponseEntity<?> findBoard(
 			@PageableDefault(page = 0, size = 5, sort = "idx", direction = Sort.Direction.DESC) Pageable pageable,
-			@RequestParam(name = "searchType") String type, @RequestParam(name = "keyword") String keyword) {
-		return ResponseEntity.ok(bs.findBoards(pageable, type, keyword));
+			@RequestParam(name = "searchType") String type, @RequestParam(name = "keyword") String keyword, @RequestParam(name = "sno") int station_no) {
+		return ResponseEntity.ok(bs.findBoards(pageable, type, keyword, station_no));
 	}
 
 	// 게시판에 글 쓰기(POST)

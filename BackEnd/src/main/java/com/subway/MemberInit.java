@@ -26,6 +26,11 @@ public class MemberInit implements ApplicationRunner{
 				.nickname(rns.makeRandomNickname())
 				.build());
 		mr.save(Member.builder()
+				.userid("bbbb")
+				.password(enc.encode("11"))
+				.nickname(rns.makeRandomNickname())
+				.build());
+		mr.save(Member.builder()
 				.userid("admin")
 				.password(enc.encode("11"))
 				.nickname("ADMIN")
