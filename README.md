@@ -1,4 +1,4 @@
-# K-Digital 7기 - AI 기반 구동계 예지보전 프로젝트
+# K-Digital 7기 - 부산 지하철 이용 현황 분석 미니 프로젝트
 
 ### FE : 문동윤
 ### BE : 김성우 (sipeporez)
